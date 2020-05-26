@@ -8,7 +8,7 @@ const { generateMessage, generateLocationMessage } = require('./utils/messages')
 const { addUser, getUser, removeUser, getUsersInRoom } = require('./utils/user.js')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 
 // created socket which can communicate clients
 const server = http.createServer(app)
