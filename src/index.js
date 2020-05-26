@@ -28,6 +28,10 @@ io.on('connection', (socket) => {
 
     // join client room
     socket.on('join', (options, callback) => {
+        const { username, room } = options
+        if (!username || !room) {
+            return callback("Username and room is required")
+        }
         const { error, user } = addUser({ id: socket.id, ...options })
 
         if (error) {
