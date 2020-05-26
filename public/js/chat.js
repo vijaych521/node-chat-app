@@ -17,6 +17,7 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
 client.on('broadcastMsg', (message) => {
     console.log(message)
     const msgHtml = Mustache.render(messageTemplate, {
+        username: message.username,
         message: message.text,
         createdAt: moment(message.createdAt).format('h:mm a')
     })
@@ -57,14 +58,20 @@ $sendLocationButton.addEventListener('click', (e) => {
 })
 
 // print current location 
-client.on('locationMessage', (location) => {
-    console.log(location)
+client.on('locationMessage', (locationMsg) => {
+    console.log(locationMsg)
     const msgHtml = Mustache.render(locationMessageTemplate, {
-        url: location.text,
-        createdAt: moment(location.createdAt).format('h:mm a')
+        username: locationMsg.username,
+        url: locationMsg.text,
+        createdAt: moment(locationMsg.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', msgHtml)
 })
 
 // joining chat room
-client.emit('join', { username, room })
+client.emit('join', { username, room }, (error) => {
+    if (error){
+        alert(error)
+        location.href ="/"
+    }
+})
